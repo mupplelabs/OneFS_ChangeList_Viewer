@@ -112,7 +112,7 @@
   }
 
   .node.active {
-    outline: 1px solid var(--border);
+    outline: 1px solid var(--accent);
   }
 
   .toggle {
@@ -389,7 +389,10 @@
   <aside id="tree" class="panel">
     <div class="tree-title">
       <span>Directories</span>
-      <span class="row"><button id="expand-all" class="button">Expand</button><button id="collapse-all" class="button">Collapse</button></span>
+      <span class="row">
+        <button id="expand-all" class="button">Expand</button>
+        <button id="collapse-all" class="button">Collapse</button>
+      </span>
     </div>
     <input id="tree-search" class="tree-search" type="text" placeholder="Search directories..." />
     <ul id="tree-root" class="tree"></ul>
@@ -464,7 +467,12 @@
     <pre id="details-json"></pre>
   </aside>
 </div>
-
+<footer>
+  <div class="muted" style="text-align:center;">
+    Version 1.0.0 - <a href="https://github.com/mupplelabs/OneFS_ChangeList_Viewer">Source</a> -
+    <a href="https://www.mupplelabs.de">Mupples Innovation Labs</a> #Iwork@DELL
+  </div>
+</footer>
 <script>
   const sampleChangeList = { entries: [
     {atime:{nsec:0,sec:1761780626}, btime:{nsec:0,sec:1761780626}, change_types:["ENTRY_ADDED","ENTRY_PATH_CHANGED"], ctime:{nsec:0,sec:1761780694}, data_pool:-3, file_type:"regular", gid:0, id:"68794975888", lin:4299685993, metadata_pool:-3, mtime:{nsec:0,sec:1761780626}, parent_lin:4299817158, path:"/foo/file_3.bin", physical_size:16896, size:9516, uid:0, user_flags:["inherit","writecache","wcinherit"]},
@@ -867,7 +875,7 @@
     }
     reader.readAsText(file);
     DemoMode = false;
-    showMessage("[ " + file.name + " ]", "info");
+    showMessage("[ " + file.name + " ]", "success");
   }
   
   // Events
@@ -893,12 +901,11 @@
 
   // global Events
   el.themeToggle.addEventListener('click',()=> document.body.classList.toggle('theme-light'));
-  el.resetBtn.addEventListener('click', resetAll);
-  el.reloadDemoBtn.addEventListener('click', () => {
-    DemoMode = true;
-    resetAll();
-  })
-  function resetAll() {
+  el.resetBtn.addEventListener('click', () => resetAll(resetDemo=false));
+  el.reloadDemoBtn.addEventListener('click', () => resetAll(resetDemo=true));
+
+  function resetAll(resetDemo = false) {
+    if (resetDemo) { DemoMode = true; }
     if (DemoMode) {
       allEntries = sampleChangeList.entries.slice();
       showMessage("[ Demo Mode ]", "success");
@@ -917,13 +924,14 @@
     sortDir = 'desc';
     rowHeight = 36;
     el.rowHeight.value = 36;
-    resetChangeTypesMenu();
-    applyPreset('Minimal');
-    applyFilters();
     el.viewport.scrollTop = 0;
     el.detailsSummary.textContent = 'Select a row to view details';
     el.detailsJson.textContent = '';
     el.treeSearch.value = '';
+    el.importJson.value = '';
+    resetChangeTypesMenu();
+    applyPreset('Minimal');
+    applyFilters();
     renderTree();
   }
 
@@ -939,6 +947,11 @@
     groupByLin=el.groupByLin.checked; 
     applyFilters(); 
   });
+
+  el.sortField.addEventListener('change', ()=>{ sortField = el.sortField.value; applyFilters(); });
+  el.sortDir.addEventListener('change', ()=>{ sortDir = el.sortDir.value; applyFilters(); });
+  el.rowHeight.addEventListener('input', ()=>{ rowHeight = Number(el.rowHeight.value)||36; renderVirtualRows(); });
+
   el.columnsBtn.addEventListener('click',()=> el.columnsMenu.classList.toggle('show'));
   el.presetMin.addEventListener('click',()=> applyPreset('Minimal')); 
   el.presetExt.addEventListener('click',()=> applyPreset('Extended')); 

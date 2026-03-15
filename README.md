@@ -2,7 +2,8 @@
 
 A blazing-fast, serverless, and fully responsive pure HTML/CSS/JS application to visually browse Dell PowerScale OneFS Changelist API results.
 
-![OneFS Viewer Showcase](/Users/stephan/.gemini/antigravity/brain/e52d7775-8dd8-45d2-a377-41b96a408066/final_dark_mode_viewer_1773577601317.png)
+![OneFS Viewer Showcase](https://raw.githubusercontent.com/mupplelabs/OneFS_ChangeList_Viewer/refs/heads/main/screenshots/Explorer_Final_Dark.png)
+![OneFS Viewer Showcase](https://raw.githubusercontent.com/mupplelabs/OneFS_ChangeList_Viewer/refs/heads/main/screenshots/Analytics_Final_Dark.png)
 
 ## Overview
 This tool is a professional-grade explorer for administrators and developers working with the OneFS RESTful API. It takes JSON output from the `/10/changelist/<CHANGELIST>/entries` endpoint and provides a high-performance interface to navigate directory structures, uncover file moves, and perform deep technical analytics.
